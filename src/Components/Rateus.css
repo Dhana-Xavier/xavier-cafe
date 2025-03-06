@@ -1,0 +1,21 @@
+.rateus-container{
+   
+    text-align: center;
+}
+
+.rateus-container h2{
+    font-size: 2 rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.star{
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: color 0.3s;
+    color: gray;
+}
+
+.star.gold{
+    color: gold;
+}
