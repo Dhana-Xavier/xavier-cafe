@@ -400,8 +400,7 @@ export default function Menu() {
               </div>
             </div>
           )} 
-            
-          
+                    
           <div className="menu-grid"  >
             <div className="menu-item" onClick={() => toggleCategory('sundae')} >
               <img src="./Menu/d1.png" alt="Sundae" />
