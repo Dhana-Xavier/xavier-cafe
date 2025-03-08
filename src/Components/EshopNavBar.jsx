@@ -18,7 +18,7 @@ export default function EshopNavBar() {
 
   return (
     <div className="navbar">
-      <a href="/" className="logo">
+      <a href="/home" className="logo">
         <img src="./assets/starbucks.png" alt="Logo" />
       </a>
       <div className="nav-links">

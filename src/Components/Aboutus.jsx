@@ -5,7 +5,7 @@ export default function AboutUs() {
   const navigate = useNavigate();
 
   const home = () => {
-    navigate('/');
+    navigate('/home');
   };
 
   return (

@@ -38,7 +38,7 @@ export default function NavBar() {
   return (
     <>
       <div className="navbar">
-        <a href="#log" className="logo" onClick={() => navigate("/")}>
+        <a href="#log" className="logo" onClick={() => navigate("/home")}>
           <img src="./assets/starbucks.png" alt="Logo" />
         </a>
 
