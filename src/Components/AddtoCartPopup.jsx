@@ -29,7 +29,7 @@ export default function AddtoCartPopup({
     useEffect(() => {
         const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
         setIsFav(storedFavorites.some(fav => fav.name === item.name));
-        calculateTotalPrice(); // Ensure initial price is calculated correctly
+        calculateTotalPrice(); 
     }, [item]);
 
     const calculateTotalPrice = () => {
