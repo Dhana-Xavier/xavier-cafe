@@ -109,7 +109,8 @@ const toggleFavorite = async (item) => {
         <Route path='/contactus' element={<ContactUs />} />
 
         <Route path='/search' element={<Search addToCart={addToCart} toggleFavorite={toggleFavorite} />} />
-        <Route path='/orderplace' element={<Orderplace setCart={setCart} />} />
+        <Route path="/orderplace" element={<Orderplace setCart={setCart} favorites={favorites} toggleFavorite={toggleFavorite} />} />
+
         <Route path='/payment' element={<Payment />} />
       </Routes>
     </BrowserRouter>

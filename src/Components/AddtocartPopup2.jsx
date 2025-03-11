@@ -16,7 +16,7 @@ export default function AddtoCartPopup2({ item, onClose, onAddToCart, onAddToFav
         const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
         setIsFav(storedFavorites.some(fav => fav.name === item.name));
 
-        const user = JSON.parse(localStorage.getItem('user')); // Check login status
+        const user = JSON.parse(localStorage.getItem('user'));
         setIsLoggedIn(!!user);
     }, [item]);
 

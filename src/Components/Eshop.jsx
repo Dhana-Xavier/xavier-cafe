@@ -10,34 +10,23 @@ import Display from './Display';
 import './Display.css';
 import Footer from './Footer';
 import AddtoCartPopup from './AddtoCartPopup';
-import OrderDetail from './OrderDetail';
-import { useLocation,useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-export default function Eshop({ addToCart, toggleFavorite }) {
+export default function Eshop({ addToCart, toggleFavorite, favorites }) {
   const [showPopup, setShowPopup] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
-
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const ItemClick = (item) => {
-    setCurrentItem(item);
-    navigate('/orderplace', { state: { item } });
+  navigate('/orderplace', { state: { item } });
   };
 
   const closePopup = () => {
     setShowPopup(false);
+    setCurrentItem(null);
   };
-
-  const handleAddToCart = (cartItem) => {
-    addToCart(cartItem);
-  };
-
-  const handleAddToFav = (favItem) => {
-    toggleFavorite(favItem);
-  };
-
+  
   const location = useLocation();
-
   useEffect(() => {
     if (location.hash) {
       const element = document.querySelector(location.hash);
@@ -50,14 +39,13 @@ export default function Eshop({ addToCart, toggleFavorite }) {
   return (
     <div>
       <EshopNavBar />
-      {/* <OrderDetail /> */}
 
       <h2 id='coffee'>Hot Classicals</h2>
       <div className='coffee-content'>
         {newCoffee.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
@@ -67,7 +55,7 @@ export default function Eshop({ addToCart, toggleFavorite }) {
         {newIced.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
@@ -77,7 +65,7 @@ export default function Eshop({ addToCart, toggleFavorite }) {
         {newCool.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
@@ -87,7 +75,7 @@ export default function Eshop({ addToCart, toggleFavorite }) {
         {newFrappe.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
@@ -97,7 +85,7 @@ export default function Eshop({ addToCart, toggleFavorite }) {
         {newShake.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
@@ -107,12 +95,21 @@ export default function Eshop({ addToCart, toggleFavorite }) {
         {newChiller.map((item, index) => (
           <Display key={index} image={item.image} name={item.name} price={item.price} 
             onClick={() => ItemClick(item)} 
-            onFavorite={() => handleAddToFav(item)} 
+            onFavorite={() => toggleFavorite(item)} 
           />
         ))}
       </div>
- <br /><br /><br /><br />
-      {showPopup && <AddtoCartPopup item={currentItem} onClose={closePopup} onAddToCart={handleAddToCart} onAddToFavorites={handleAddToFav} />}
+
+      {showPopup && (
+        <AddtoCartPopup 
+          item={currentItem} 
+          onClose={closePopup} 
+          onAddToCart={addToCart} 
+          toggleFavorite={toggleFavorite} 
+          favorites={favorites}
+        />
+      )}
+
       <Footer />
     </div>
   );

@@ -7,7 +7,7 @@ import './OrderPlace.css';
 import { PiPintGlass } from "react-icons/pi";
 import { GiFairyWand } from "react-icons/gi";
 
-export default function Orderplace({ setCart }) {
+export default function Orderplace({setCart, favorites, toggleFavorite }) {
     const location = useLocation();
     const item = location.state?.item;
     const [showPopup, setShowPopup] = useState(false);
@@ -204,6 +204,8 @@ export default function Orderplace({ setCart }) {
                     selectedWhippedCream={selectedWhippedCream}
                     onAddToCart={handleAddToCartSubmit}
                     onAddToFavorites={handleAddToFavorites}
+                    favorites={favorites}
+                    toggleFavorite={toggleFavorite}
             
                 />
             )}

@@ -5,7 +5,7 @@ import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 export default function AddtoCartPopup({ 
-    item,
+    item = {}, // Ensure item is always an object
     onClose,
     flavorOptions = [],
     addOns = [],
@@ -16,25 +16,28 @@ export default function AddtoCartPopup({
     selectedPreparation = '',
     selectedWhippedCream = '',
     onAddToCart,
-    onAddToFavorites 
+    toggleFavorite = () => {},
+    favorites = [] // Ensure favorites is always an array
 }) {
-    const [count, setCount] = useState(item.quantity || 1);
-    const [total, setTotal] = useState(item.totalPrice || item.price);
+    const [count, setCount] = useState(item?.quantity || 1);
+    const [total, setTotal] = useState(item?.totalPrice || item?.price || 0);
     const [isFav, setIsFav] = useState(false);
+
+    // Ensure item exists before trying to access its properties
+    useEffect(() => {
+        if (item?.name) {
+            setIsFav(favorites.some(fav => fav.name === item.name));
+        }
+    }, [favorites, item]);
 
     useEffect(() => {
         calculateTotalPrice();
     }, [selectedFlavors, selectedAddOn, selectedPreparation, selectedWhippedCream, count]);
 
-    useEffect(() => {
-        const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        setIsFav(storedFavorites.some(fav => fav.name === item.name));
-        calculateTotalPrice(); 
-    }, [item]);
-
     const calculateTotalPrice = () => {
-        const basePrice = item.price;
+        if (!item?.price) return; // Prevent errors if price is undefined
 
+        const basePrice = item.price;
         const flavorCost = selectedFlavors.reduce((sum, flavor) => {
             const option = flavorOptions.find(f => f.name === flavor);
             return sum + (option ? option.cost : 0);
@@ -51,7 +54,9 @@ export default function AddtoCartPopup({
     const increment = () => setCount(prev => prev + 1);
     const decrement = () => setCount(prev => (prev > 1 ? prev - 1 : prev));
 
-    const addtoCart = () => {
+    const addToCart = () => {
+        if (!item?.name) return; // Prevent adding undefined items
+
         const cartItem = {
             ...item,
             quantity: count,
@@ -61,14 +66,19 @@ export default function AddtoCartPopup({
             selectedPreparation,
             selectedWhippedCream
         };
-        onAddToCart(cartItem); 
-        onClose(); 
+        onAddToCart(cartItem);
+        onClose();
     };
 
-    const toggleFavorite = () => {
-        setIsFav(!isFav);
-        onAddToFavorites(item);
+    const handleToggleFavorite = () => {
+        if (typeof toggleFavorite === "function") {
+            toggleFavorite(item);
+        } else {
+            console.error("toggleFavorite is not a function");
+        }
     };
+    
+    if (!item?.name) return null; // Prevent rendering if item is missing
 
     return (
         <div className='pop-overlay'>
@@ -84,8 +94,8 @@ export default function AddtoCartPopup({
                         <span>{count}</span>
                         <button onClick={increment}><CiCirclePlus /></button>
                     </div>
-                    <button onClick={addtoCart}> Add To Cart </button><br />
-                    <button className="fav-btn" onClick={toggleFavorite}>
+                    <button onClick={addToCart}> Add To Cart </button><br />
+                    <button className="fav-btn" onClick={handleToggleFavorite}>
                         {isFav ? <FaHeart color="red" /> : <FaRegHeart />}
                     </button>
                 </div>
