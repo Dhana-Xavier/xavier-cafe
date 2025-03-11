@@ -7,6 +7,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import LoginPopup from "./Login/LoginPopup";
 import { FiSearch } from "react-icons/fi";
 import { FaCartShopping } from "react-icons/fa6";
+import Swal from "sweetalert2"; 
 
 export default function NavBar() {
   const [user, setUser] = useState(null);
@@ -35,33 +36,58 @@ export default function NavBar() {
     }
   };
 
+  const handleFavoritesClick = () => {
+    if (user) {
+      navigate("/fav"); 
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please log in to view favorites.",
+        showCancelButton: true,
+        confirmButtonText: "Login Now",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowLogin(true); 
+        }
+      });
+    }
+  };
+
   return (
     <>
       <div className="navbar">
-        <a href="#log" className="logo" onClick={() => navigate("/home")}>
+        <a className="logo" onClick={() => navigate("/home")}>
           <img src="./assets/starbucks.png" alt="Logo" />
         </a>
 
         <div className="nav-links">
-          <a onClick={(e) => { e.preventDefault(); navigate("/menu"); }}>Menu</a>
-          <a href="#logo" onClick={() => navigate("/eshop")}>
+          <a onClick={() => navigate("/menu")}>Menu</a>
+          <a onClick={() => navigate("/eshop")}>
             E-Shop <MdOutlineShoppingCart />
           </a>
-          <a href="#about" onClick={() => navigate("/aboutus")}>About us</a>
-          <a href="#offers" onClick={() => navigate("/offers")}>Offers</a>
-          <a href="#favo" onClick={() => navigate("/fav")}>Favorites</a>
-          <a href="#rate" onClick={()=>navigate("/rate")}>Rate Us</a>
-          <a href="#footer">Contact Us</a>
-
-         
-        
+          <a onClick={() => navigate("/aboutus")}>About us</a>
+          <a onClick={() => navigate("/offers")}>Offers</a>
+          <a onClick={handleFavoritesClick}>Favorites</a> 
+          <a onClick={() => navigate("/rate")}>Rate Us</a>
+          <a onClick={() => navigate("/contactus")}>Contact Us</a>
 
           <div className="nav-links-right">
-          <form onSubmit={handleSearch} className="search-bar">
-            <input type="search" placeholder="Search menu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-            <button type="submit"><FiSearch/></button>
-          </form>
-           <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
+            <form onSubmit={handleSearch} className="search-bar">
+              <input
+                type="search"
+                placeholder="Search menu..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button type="submit"><FiSearch /></button>
+            </form>
+
+            <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
+
             <div className="dropdown">
               <a onClick={() => setShowDropdown(!showDropdown)}>
                 <FaRegBell />
@@ -90,7 +116,7 @@ export default function NavBar() {
                   </div>
                 </div>
               ) : (
-                <a href="#login" onClick={() => setShowLogin(!showLogin)}>
+                <a onClick={() => setShowLogin(true)}>
                   <CgProfile />
                 </a>
               )}

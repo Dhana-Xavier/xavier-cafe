@@ -3,36 +3,56 @@ import "./LoginPopup.css";
 import RegisterPopup from "./RegisterPopup";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { BsEye } from "react-icons/bs";
+
 export default function LoginPopup({ isOpen, onClose }) {
   const [isRegisterOpen, setRegisterOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
   const location = useLocation();
   const navigate = useNavigate();
   const frompage = location.state?.from || "/";
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:3001/login", { email, password })
-      .then((result) => {
-        console.log(result.data);
-        if (result.data.status === "Success") {
-          alert(result.data.status);
-          localStorage.setItem(
-            "user",
-            JSON.stringify({ email, uname: result.data.uname })
-          );
-          navigate(frompage);
+    try {
+      const result = await axios.post("http://localhost:3001/login", { email, password });
+
+      if (result.data.status === "Success") {
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome, ${result.data.uname}!`,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+
+        localStorage.setItem("user", JSON.stringify({ email, uname: result.data.uname }));
+        navigate(frompage);
+
+        setTimeout(() => {
           window.location.reload();
-        } else {
-          alert(result.data);
-        }
-      })
-      .catch((err) => console.log(err));
+        }, 2000);
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed!",
+          text: result.data,
+          confirmButtonColor: "#ff4d4d",
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Server Error!",
+        text: "Something went wrong. Please try again later.",
+        confirmButtonColor: "#ff4d4d",
+      });
+      console.error(err);
+    }
   };
 
   if (!isOpen && !isRegisterOpen) return null;
@@ -58,16 +78,15 @@ export default function LoginPopup({ isOpen, onClose }) {
                 </div>
                 <div className="form-input password-container">
                   <input
-                    type={showPassword ? "text" : "password"} placeholder="Password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
                     required
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)} autoComplete="new-password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    autoComplete="new-password"
                   />
-                  <span 
-                    className="toggle-password"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? "🙈" : <BsEye/>}
+                  <span className="toggle-password" onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? "🙈" : <BsEye />}
                   </span>
                 </div>
                 <div className="forget">

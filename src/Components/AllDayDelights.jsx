@@ -11,7 +11,7 @@ import Display2 from './Display2';
 import Footer from './Footer';
 import AddtoCartPopup2 from './AddtocartPopup2';
 
-export default function AllDayDelights({ addToCart }) {
+export default function AllDayDelights({ addToCart,toggleFavorite }) {
   const [showPopup, setShowPopup] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [favorites, setFavorites] = useState([]);
@@ -39,11 +39,9 @@ export default function AllDayDelights({ addToCart }) {
   };
 
   const handleAddToFav = (favItem) => {
-    setFavorites((prevFavorites) => {
-      const isFav = prevFavorites.some((item) => item.name === favItem.name);
-      return isFav ? prevFavorites.filter((item) => item.name !== favItem.name) : [...prevFavorites, favItem];
-    });
+    toggleFavorite(favItem);
   };
+ 
 
   const location = useLocation();
 
