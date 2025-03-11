@@ -4,6 +4,8 @@ import AddtoCartPopup from './AddtoCartPopup';
 import './Cart.css';
 import NavBar from './NavBar'
 import Footer from './Footer';
+import Swal from 'sweetalert2';
+
 
 export default function Favorites({ favorites, toggleFavorite, addToCart }) {
   const [showPopup, setShowPopup] = useState(false);
@@ -17,6 +19,21 @@ export default function Favorites({ favorites, toggleFavorite, addToCart }) {
   const closePopup = () => {
     setShowPopup(false);
   };
+  const handleAddToCart = (item) => {
+    addToCart(item);
+
+    // SweetAlert Notification
+    Swal.fire({
+      icon: 'success',
+      title: 'Added to Cart!',
+      text: `${item.name} has been added to your cart.`,
+      showConfirmButton: false,
+      timer: 1500
+    });
+
+    closePopup();
+  };
+
 
   return (
     <div>
@@ -49,7 +66,7 @@ export default function Favorites({ favorites, toggleFavorite, addToCart }) {
         <AddtoCartPopup
           item={currentItem}
           onClose={closePopup}
-          onAddToCart={addToCart}
+          onAddToCart={handleAddToCart}
           onAddToFavorites={toggleFavorite}
         />
       )}

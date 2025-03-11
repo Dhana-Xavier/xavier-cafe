@@ -15,8 +15,8 @@ import Previous from './Components/Previous';
 import Search from './Components/Search';
 import Orderplace from './Components/Orderplace';
 import Rateus from './Components/Rateus';
-import ContactUs from './Components/ContactUs';
 import Payment from './Components/Payment';
+import ContactUs from './Components/ContactUs';
 import axios from 'axios';
 
 function App() {
@@ -106,7 +106,8 @@ const toggleFavorite = async (item) => {
         <Route path='/fav' element={<Favorites favorites={favorites} toggleFavorite={toggleFavorite} addToCart={addToCart}/>} />
         <Route path='/prev' element={<Previous />} />
         <Route path='/rate' element={<Rateus />} />
-        <Route path='/contactus' element={<ContactUs/>} />
+        <Route path='/contactus' element={<ContactUs />} />
+
         <Route path='/search' element={<Search addToCart={addToCart} toggleFavorite={toggleFavorite} />} />
         <Route path='/orderplace' element={<Orderplace setCart={setCart} />} />
         <Route path='/payment' element={<Payment />} />

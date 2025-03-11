@@ -7,6 +7,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import LoginPopup from "./Login/LoginPopup";
 import { FiSearch } from "react-icons/fi";
 import { FaCartShopping } from "react-icons/fa6";
+import ContactUs from "./ContactUs";
 import Swal from "sweetalert2"; 
 
 export default function NavBar() {
@@ -15,7 +16,7 @@ export default function NavBar() {
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     const storeduser = JSON.parse(localStorage.getItem("user"));
     if (storeduser) {

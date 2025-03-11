@@ -108,3 +108,19 @@
 }
 
 
+.error-container {
+  position: absolute;
+  bottom: 2px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
+ 
+}
+
+.error-message {
+  color: red !important;
+  font-weight: bold;
+  font-size: 14px;
+}
+

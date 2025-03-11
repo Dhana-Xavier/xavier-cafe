@@ -4,11 +4,14 @@ import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
+import { GrFavorite } from "react-icons/gr";
 
 export default function EshopNavBar() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-
+  const fav=()=>{
+    navigate("/fav");
+  }
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -57,7 +60,7 @@ export default function EshopNavBar() {
             <a onClick={() => navigate('/sweet#own')}>Make Your Plate</a>
           </div>
         </div>
-
+       
         <div className="nav-links-right">
           <form onSubmit={handleSearch} className="search-bar">
             <input 
@@ -67,7 +70,9 @@ export default function EshopNavBar() {
               onChange={(e) => setSearchTerm(e.target.value)} 
             />
             <button type="submit"><FiSearch /></button>
+            
           </form>
+          <a onClick={() => navigate('/fav')}><GrFavorite /></a>
           <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
         </div>
       </div>
