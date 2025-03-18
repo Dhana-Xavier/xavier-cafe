@@ -65,6 +65,18 @@
     color: #00704a;
     margin-top: -10px;
   }
+
+  .forget a {
+    padding: 6px;
+    color: #00704a;
+    font-size: 0.85rem;
+    margin-top: -10px;
+    text-decoration: none !important ;
+    float: right !important;
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
   
   .login-submit {
     margin-top: 20px;
@@ -88,8 +100,9 @@
   a {
     color: #00704a;
     text-decoration: none;
+    
   }
-  
+
   .signup  a:hover {
     text-decoration: underline;
   }

@@ -3,6 +3,7 @@ import './AddtoCartPopup.css';
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 export default function AddtoCartPopup({ 
     item = {}, // Ensure item is always an object
@@ -17,17 +18,21 @@ export default function AddtoCartPopup({
     selectedWhippedCream = '',
     onAddToCart,
     toggleFavorite = () => {},
-    favorites = [] // Ensure favorites is always an array
+    favorites = []
 }) {
     const [count, setCount] = useState(item?.quantity || 1);
     const [total, setTotal] = useState(item?.totalPrice || item?.price || 0);
     const [isFav, setIsFav] = useState(false);
+    const [isLoggedIn,setIsLoggedIn]=useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    // Ensure item exists before trying to access its properties
+  
     useEffect(() => {
         if (item?.name) {
             setIsFav(favorites.some(fav => fav.name === item.name));
         }
+        const user = JSON.parse(localStorage.getItem("user"));
+        setIsLoggedIn(!!user);
     }, [favorites, item]);
 
     useEffect(() => {
@@ -35,7 +40,7 @@ export default function AddtoCartPopup({
     }, [selectedFlavors, selectedAddOn, selectedPreparation, selectedWhippedCream, count]);
 
     const calculateTotalPrice = () => {
-        if (!item?.price) return; // Prevent errors if price is undefined
+        if (!item?.price) return; 
 
         const basePrice = item.price;
         const flavorCost = selectedFlavors.reduce((sum, flavor) => {
@@ -55,8 +60,10 @@ export default function AddtoCartPopup({
     const decrement = () => setCount(prev => (prev > 1 ? prev - 1 : prev));
 
     const addToCart = () => {
-        if (!item?.name) return; // Prevent adding undefined items
-
+        if (!isLoggedIn) {
+            setErrorMessage('⚠ Please log in to add items to your cart.');
+            return;
+        }
         const cartItem = {
             ...item,
             quantity: count,
@@ -67,10 +74,21 @@ export default function AddtoCartPopup({
             selectedWhippedCream
         };
         onAddToCart(cartItem);
+        Swal.fire({
+            icon: 'success',
+            title: 'Added to Cart!',
+            text: `${item.name} has been added to your cart.`,
+            showConfirmButton: false,
+            timer: 1500
+        });
         onClose();
     };
 
     const handleToggleFavorite = () => {
+        if (!isLoggedIn) {
+            setErrorMessage('⚠ Please log in to add items to favorites.');
+            return;
+        }
         if (typeof toggleFavorite === "function") {
             toggleFavorite(item);
         } else {
@@ -78,7 +96,7 @@ export default function AddtoCartPopup({
         }
     };
     
-    if (!item?.name) return null; // Prevent rendering if item is missing
+    if (!item?.name) return null; 
 
     return (
         <div className='pop-overlay'>
@@ -95,6 +113,9 @@ export default function AddtoCartPopup({
                         <button onClick={increment}><CiCirclePlus /></button>
                     </div>
                     <button onClick={addToCart}> Add To Cart </button><br />
+                    <div className="error-container">
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    </div>
                     <button className="fav-btn" onClick={handleToggleFavorite}>
                         {isFav ? <FaHeart color="red" /> : <FaRegHeart />}
                     </button>

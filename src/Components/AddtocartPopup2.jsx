@@ -9,6 +9,7 @@ export default function AddtoCartPopup2({ item, onClose, onAddToCart, onAddToFav
     const [count, setCount] = useState(item.quantity || 1);
     const [total, setTotal] = useState(item.totalPrice || item.price);
     const [isFav, setIsFav] = useState(false);
+    
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 

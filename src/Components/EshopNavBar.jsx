@@ -1,17 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './EshopNavBar.css';
 import '../App.css';
 import { useNavigate } from 'react-router-dom';
 import { FaCartShopping } from "react-icons/fa6";
 import { FiSearch } from "react-icons/fi";
 import { GrFavorite } from "react-icons/gr";
+import LoginPopup from './Login/LoginPopup';
+import Swal from 'sweetalert2';
 
 export default function EshopNavBar() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const fav=()=>{
-    navigate("/fav");
+  const [user,setUser]=useState(null);
+  const [showLogin, setShowLogin] = useState(false);
+
+
+useEffect (()=>{
+  const storedUser=JSON.parse(localStorage.getItem("user"));
+  if(storedUser){
+    setUser(storedUser);
   }
+},[]);
+
+    const fav=()=>{
+    if(user){
+      navigate('/fav');
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please log in to view favorites.",
+        showCancelButton: true,
+        confirmButtonText: "Login Now",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowLogin(true); 
+        }
+      });
+    }
+  };
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -72,8 +102,10 @@ export default function EshopNavBar() {
             <button type="submit"><FiSearch /></button>
             
           </form>
-          <a onClick={() => navigate('/fav')}><GrFavorite /></a>
+          <a  onClick={fav}><GrFavorite /></a>
           <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
+           <LoginPopup isOpen={showLogin} onClose={() => setShowLogin(false)} />
+
         </div>
       </div>
     </div>

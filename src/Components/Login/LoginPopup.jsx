@@ -97,7 +97,7 @@ export default function LoginPopup({ isOpen, onClose }) {
                 </div>
                 <div className="signup">
                   <p>Don't have an account?</p>
-                  <a
+                  <a 
                     href="#"
                     onClick={(e) => {
                       e.preventDefault();
