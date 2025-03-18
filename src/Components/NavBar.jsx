@@ -36,6 +36,27 @@ export default function NavBar() {
       navigate(`/search?searchterm=${encodeURIComponent(searchTerm)}`);
     }
   };
+  const handleCartClick = () => {
+    if (user) {
+      navigate("/cart"); // Navigate if logged in
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please log in to view your cart.",
+        showCancelButton: true,
+        confirmButtonText: "Login Now",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowLogin(true); // Show login if confirmed
+        }
+      });
+    }
+  };
+  
 
   const handleFavoritesClick = () => {
     if (user) {
@@ -87,7 +108,8 @@ export default function NavBar() {
               <button type="submit"><FiSearch /></button>
             </form>
 
-            <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
+            <a onClick={handleCartClick}><FaCartShopping /></a>
+
 
             <div className="dropdown">
               <a onClick={() => setShowDropdown(!showDropdown)}>

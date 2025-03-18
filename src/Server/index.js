@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Usermodel = require("./models/users");
 const FavoriteModel = require("./models/favorite");
-const CartModel = require("./models/cart"); // Import Cart model
+const CartModel = require("./models/cart");
+const sweetRoutes = require("./routes/sweet"); // ✅ Import Sweet Routes
 
 const app = express();
 app.use(express.json());
@@ -156,5 +157,8 @@ app.delete("/clearCart", async (req, res) => {
     res.status(500).json({ error: "Error clearing cart" });
   }
 });
+
+// ✅ Sweet Routes
+app.use("/api/sweet", sweetRoutes);
 
 app.listen(3001, () => console.log("Server running on port 3001"));
