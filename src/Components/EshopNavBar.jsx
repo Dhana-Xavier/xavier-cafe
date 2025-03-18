@@ -11,19 +11,19 @@ import Swal from 'sweetalert2';
 export default function EshopNavBar() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [user,setUser]=useState(null);
+  const [user, setUser] = useState(null);
   const [showLogin, setShowLogin] = useState(false);
 
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
 
-useEffect (()=>{
-  const storedUser=JSON.parse(localStorage.getItem("user"));
-  if(storedUser){
-    setUser(storedUser);
-  }
-},[]);
-
-    const fav=()=>{
-    if(user){
+  // ✅ Handle Favorites
+  const fav = () => {
+    if (user) {
       navigate('/fav');
     } else {
       Swal.fire({
@@ -37,11 +37,35 @@ useEffect (()=>{
         cancelButtonColor: "#d33",
       }).then((result) => {
         if (result.isConfirmed) {
-          setShowLogin(true); 
+          setShowLogin(true);
         }
       });
     }
   };
+
+  // ✅ Handle Cart
+  const cart = () => {
+    if (user) {
+      navigate('/cart');
+    } else {
+      Swal.fire({
+        icon: "warning",
+        title: "Login Required",
+        text: "Please log in to view your cart.",
+        showCancelButton: true,
+        confirmButtonText: "Login Now",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setShowLogin(true);
+        }
+      });
+    }
+  };
+
+  // ✅ Handle Search
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -90,25 +114,22 @@ useEffect (()=>{
             <a onClick={() => navigate('/sweet#own')}>Make Your Plate</a>
           </div>
         </div>
-       
+
         <div className="nav-links-right">
           <form onSubmit={handleSearch} className="search-bar">
-            <input 
-              type="search" 
-              placeholder="Search menu..." 
-              value={searchTerm} 
-              onChange={(e) => setSearchTerm(e.target.value)} 
+            <input
+              type="search"
+              placeholder="Search menu..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <button type="submit"><FiSearch /></button>
-            
           </form>
-          <a  onClick={fav}><GrFavorite /></a>
-          <a onClick={() => navigate('/cart')}><FaCartShopping /></a>
-           <LoginPopup isOpen={showLogin} onClose={() => setShowLogin(false)} />
-
+          <a onClick={fav}><GrFavorite /></a>
+          <a onClick={cart}><FaCartShopping /></a>
+          <LoginPopup isOpen={showLogin} onClose={() => setShowLogin(false)} />
         </div>
       </div>
     </div>
   );
 }
-  
