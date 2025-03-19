@@ -17,6 +17,7 @@ import Orderplace from "./Components/Orderplace";
 import Rateus from "./Components/Rateus";
 import Payment from "./Components/Payment";
 import ContactUs from "./Components/ContactUs";
+
 import axios from "axios";
 
 function App() {
@@ -188,6 +189,7 @@ function App() {
           }
         />
         <Route path="/payment" element={<Payment />} />
+        <Route path="/previous" element={<Previous />} />
       </Routes>
     </BrowserRouter>
   );
