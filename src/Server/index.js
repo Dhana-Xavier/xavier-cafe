@@ -6,6 +6,8 @@ const FavoriteModel = require("./models/favorite");
 const CartModel = require("./models/cart");
 const sweetRoutes = require("./routes/sweet"); 
 const contactRoutes = require("./routes/contact"); 
+const rateusRoute = require("./routes/rateus"); 
+
 
 
 const app = express();
@@ -163,6 +165,7 @@ app.delete("/clearCart", async (req, res) => {
 
 app.use("/api/sweet", sweetRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/rateus", rateusRoute);
 
 app.post("/placeorder", (req, res) => {
   const orderData = req.body;
