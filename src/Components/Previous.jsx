@@ -70,6 +70,8 @@ export default function Previous() {
         ) : (
           <p>No previous orders found.</p>
         )}
+        <br />
+        <br />
       </div>
       <Footer />
     </div>
