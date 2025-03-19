@@ -3,7 +3,7 @@ const Sweet = require("../models/sweet");
 
 const router = express.Router();
 
-// ✅ Get All Sweets
+
 router.get("/getSweets", async (req, res) => {
   try {
     const sweets = await Sweet.find();
@@ -13,7 +13,7 @@ router.get("/getSweets", async (req, res) => {
   }
 });
 
-// ✅ Get Sweet by Category
+
 router.get("/getSweetsByCategory", async (req, res) => {
   const { category } = req.query;
   try {
@@ -24,7 +24,6 @@ router.get("/getSweetsByCategory", async (req, res) => {
   }
 });
 
-// ✅ Add Sweet (Admin Only)
 router.post("/addSweet", async (req, res) => {
   try {
     const newSweet = new Sweet(req.body);
@@ -35,7 +34,7 @@ router.post("/addSweet", async (req, res) => {
   }
 });
 
-// ✅ Delete Sweet (Admin Only)
+
 router.delete("/deleteSweet/:id", async (req, res) => {
   try {
     await Sweet.findByIdAndDelete(req.params.id);

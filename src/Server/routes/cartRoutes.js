@@ -3,7 +3,7 @@ const Cart = require('../models/cart');
 
 const router = express.Router();
 
-// ✅ Add to Cart
+
 router.post('/addToCart', async (req, res) => {
     const { user, item } = req.body;
 
@@ -29,7 +29,7 @@ router.post('/addToCart', async (req, res) => {
     }
 });
 
-// ✅ Get Cart
+
 router.get('/getCart', async (req, res) => {
     try {
         const cart = await Cart.findOne({ userEmail: req.query.user });
@@ -39,7 +39,7 @@ router.get('/getCart', async (req, res) => {
     }
 });
 
-// ✅ Remove Item from Cart
+
 router.delete('/removeFromCart', async (req, res) => {
     const { user, item } = req.body;
 
@@ -58,7 +58,7 @@ router.delete('/removeFromCart', async (req, res) => {
     }
 });
 
-// ✅ Clear Cart
+
 router.delete('/clearCart', async (req, res) => {
     try {
         await Cart.findOneAndUpdate({ userEmail: req.body.user }, { items: [] });

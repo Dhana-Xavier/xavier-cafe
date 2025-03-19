@@ -4,7 +4,9 @@ const cors = require("cors");
 const Usermodel = require("./models/users");
 const FavoriteModel = require("./models/favorite");
 const CartModel = require("./models/cart");
-const sweetRoutes = require("./routes/sweet"); // ✅ Import Sweet Routes
+const sweetRoutes = require("./routes/sweet"); 
+const contactRoutes = require("./routes/contact"); 
+
 
 const app = express();
 app.use(express.json());
@@ -18,7 +20,7 @@ mongoose
   .then(() => console.log("Connected to DB"))
   .catch((err) => console.log(err));
 
-// ✅ User Login
+
 app.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -31,7 +33,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// ✅ User Registration
+
 app.post("/authentication", async (req, res) => {
   try {
     const { email } = req.body;
@@ -44,7 +46,7 @@ app.post("/authentication", async (req, res) => {
   }
 });
 
-// ✅ Add to Favorites
+
 app.post("/favorites", async (req, res) => {
   try {
     const { user, item } = req.body;
@@ -71,7 +73,7 @@ app.post("/favorites", async (req, res) => {
   }
 });
 
-// ✅ Delete from Favorites
+
 app.delete("/delfavorites", async (req, res) => {
   try {
     const { user, item } = req.body;
@@ -82,7 +84,7 @@ app.delete("/delfavorites", async (req, res) => {
   }
 });
 
-// ✅ Get Favorites
+
 app.get("/getfavorites", async (req, res) => {
   try {
     const { user } = req.query;
@@ -93,7 +95,7 @@ app.get("/getfavorites", async (req, res) => {
   }
 });
 
-// ✅ Add to Cart
+
 app.post("/addToCart", async (req, res) => {
   const { user, item } = req.body;
 
@@ -119,7 +121,7 @@ app.post("/addToCart", async (req, res) => {
   }
 });
 
-// ✅ Get Cart
+
 app.get("/getCart", async (req, res) => {
   try {
     const cart = await CartModel.findOne({ userEmail: req.query.user });
@@ -129,7 +131,7 @@ app.get("/getCart", async (req, res) => {
   }
 });
 
-// ✅ Remove Item from Cart
+
 app.delete("/removeFromCart", async (req, res) => {
   const { user, item } = req.body;
 
@@ -148,7 +150,7 @@ app.delete("/removeFromCart", async (req, res) => {
   }
 });
 
-// ✅ Clear Cart
+
 app.delete("/clearCart", async (req, res) => {
   try {
     await CartModel.findOneAndUpdate({ userEmail: req.body.user }, { items: [] });
@@ -158,7 +160,20 @@ app.delete("/clearCart", async (req, res) => {
   }
 });
 
-// ✅ Sweet Routes
+
 app.use("/api/sweet", sweetRoutes);
+app.use("/api/contact", contactRoutes);
+
+app.post("/placeorder", (req, res) => {
+  const orderData = req.body;
+  console.log("Order Data Received:", orderData);
+
+  if (!orderData.items || orderData.items.length === 0) {
+      return res.status(400).json({ success: false, message: "Cart is empty!" });
+  }
+
+  // Dummy success response
+  res.status(200).json({ success: true, message: "Order placed successfully!" });
+});
 
 app.listen(3001, () => console.log("Server running on port 3001"));

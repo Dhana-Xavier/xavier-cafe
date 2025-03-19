@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./Contactus.css";
 import Swal from "sweetalert2";
 import NavBar from "./NavBar";
+import axios from "axios";
 import Footer from "./Footer";
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -32,16 +33,28 @@ export default function ContactUs() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      Swal.fire({
-        icon: "success",
-        title: "Message Sent!",
-        text: "We will get back to you soon.",
-        confirmButtonColor: "#3085d6",
-      });
-      setFormData({ name: "", email: "", message: "" }); // Reset form
+      try {
+        const res = await axios.post("http://localhost:3001/api/contact/sendMessage", formData);
+  
+        if (res.data.success) {
+          Swal.fire({
+            icon: "success",
+            title: "Message Sent!",
+            text: "We will get back to you soon.",
+          });
+          setFormData({ name: "", email: "", message: "" }); // Clear form
+        }
+      } catch (err) {
+        console.error("Error sending message:", err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops!",
+          text: "Failed to send the message. Try again later.",
+        });
+      }
     }
   };
 
