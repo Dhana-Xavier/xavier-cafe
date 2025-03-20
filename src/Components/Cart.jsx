@@ -8,10 +8,10 @@ export default function Cart({ cartItems = [], setCart }) {
   const [checkout, setCheckout] = useState(false);
   const [editItem, setEditItem] = useState(null);
 
-  // ✅ Get current logged-in user
+  
   const user = JSON.parse(localStorage.getItem("user"));
 
-  // ✅ Remove single item
+ 
   const removeItem = async (index) => {
     if (!user) {
       console.error("User not logged in.");
@@ -29,7 +29,7 @@ export default function Cart({ cartItems = [], setCart }) {
     }
   };
 
-  // ✅ Remove all items
+ 
   const removeAll = async () => {
     if (!user) {
       console.error("User not logged in.");
@@ -46,7 +46,7 @@ export default function Cart({ cartItems = [], setCart }) {
     }
   };
 
-  // ✅ Merge duplicate items in cart
+ 
   const mergeCart = cartItems.reduce((acc, item) => {
     const oldItem = acc.find((cartItem) => cartItem.name === item.name);
     if (oldItem) {
@@ -58,10 +58,10 @@ export default function Cart({ cartItems = [], setCart }) {
     return acc;
   }, []);
 
-  // ✅ Calculate Grand Total
+ 
   const grandTotal = mergeCart.reduce((acc, item) => acc + item.totalPrice, 0);
 
-  // ✅ Handle item update after edit
+ 
   const handleUpdateCart = async (updatedItem) => {
     if (!user) {
       console.error("User not logged in.");
@@ -74,7 +74,7 @@ export default function Cart({ cartItems = [], setCart }) {
         item: updatedItem,
       });
 
-      setCart(res.data.items); // Update with the latest cart from backend
+      setCart(res.data.items); 
       setEditItem(null);
     } catch (error) {
       console.error("Error updating item:", error);
@@ -83,7 +83,7 @@ export default function Cart({ cartItems = [], setCart }) {
 
   return (
     <div className="cart-box">
-      {/* 🛒 Empty Cart Message */}
+      
       {mergeCart.length === 0 ? (
         <h3>Your Cart is Empty</h3>
       ) : (
@@ -116,7 +116,7 @@ export default function Cart({ cartItems = [], setCart }) {
         </ul>
       )}
 
-      {/* 🛒 Cart Actions */}
+      
       <div className="cart-button">
         {mergeCart.length > 0 && (
           <>
@@ -133,13 +133,13 @@ export default function Cart({ cartItems = [], setCart }) {
         )}
       </div>
 
-      {/* 💰 Grand Total */}
+     
       {mergeCart.length > 0 && <h3>Grand Total: RS. {grandTotal.toFixed(2)}</h3>}
 
-      {/* ✅ Checkout Component */}
+      
       {checkout && <Checkout total={grandTotal} setCart={setCart} />}
 
-      {/* ✏️ Edit Cart Popup */}
+     
       {editItem && (
         <AddtoCartPopup
           item={editItem}

@@ -8,7 +8,7 @@ export default function Previous() {
   const [orders, setOrders] = useState([]);
   const [user, setUser] = useState(null);
 
-  // Fetch user and previous orders on component mount
+ 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
@@ -17,7 +17,7 @@ export default function Previous() {
     }
   }, []);
 
-  // Fetch orders for the current user
+ 
   const fetchPreviousOrders = async (email) => {
     try {
       const res = await axios.get("http://localhost:3001/api/previous/getOrders", {
